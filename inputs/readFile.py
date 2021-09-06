@@ -7,10 +7,6 @@ def readFile(filename):
     for i in range(len(text)):
         matriz.append((text[i].split()))
 
-    
     file.close()
 
-
     return matriz
-
-readFile('inputs/p01_dist.txt')
