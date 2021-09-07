@@ -10,12 +10,12 @@ def nearestNeighbor(matrix, source):
  
     Examples:
         >>> import numpy as np
-        >>> graph = np.array([[  0, 300, 250, 190, 230],
+        >>> matrix = np.array([[  0, 300, 250, 190, 230],
         >>>                   [300,   0, 230, 330, 150],
         >>>                   [250, 230,   0, 240, 120],
         >>>                   [190, 330, 240,   0, 220],
         >>>                   [230, 150, 120, 220,   0]])
-        >>> christofides_tsp(graph)
+        >>> nearestNeighbor(matrix, source=0)
     """
     # 1. escolha um vértice arbitrário como vértice atual.
     currentVertex = source
