@@ -1,9 +1,22 @@
-from inputs.readFile import readFile
 import sys
-from timeit import default_timer as timer
-
 
 def nearestNeighbor(matrix, source):
+    """
+    NearestNeighbor TSP algorithm
+    https://pt.wikipedia.org/wiki/Algoritmo_do_vizinho_mais_pr%C3%B3ximo
+    Args:
+        graph: adjacency matrix
+        source: starting point
+ 
+    Examples:
+        >>> import numpy as np
+        >>> graph = np.array([[  0, 300, 250, 190, 230],
+        >>>                   [300,   0, 230, 330, 150],
+        >>>                   [250, 230,   0, 240, 120],
+        >>>                   [190, 330, 240,   0, 220],
+        >>>                   [230, 150, 120, 220,   0]])
+        >>> christofides_tsp(graph)
+    """
     # 1. escolha um vértice arbitrário como vértice atual.
     currentVertex = source
 
@@ -44,22 +57,7 @@ def nearestNeighbor(matrix, source):
     visitedVertex.append(nextVertex)                             
     visitedVertex.append(visitedVertex[0])
 
-    print('Menor custo =>', sum(arrayDistances), '\n')
-    print('Melhor caminho =>', visitedVertex)
+    return [sum(arrayDistances), visitedVertex]
 
-
-# matrix = [[0.0,  39.3,  37.2,  65.9,  56.3, 33.0, 51.0],
-#           [39.0,  0.0,  38.9,  49.2,  79.4, 53.7, 68.2],
-#           [37.2,  38.9,  0.0,  30.9,  43.0, 21.2, 30.4],
-#           [65.9,  49.2,  30.9,  0.0,  64.1, 50.0, 50.6],
-#           [56.5,  79.4,  43.0, 64.1, 0.0, 26.1, 13.6],
-#           [33.0, 53.7, 21.2, 50.0, 26.1, 0.0, 18.0],
-#           [51.0, 68.2, 30.4, 50.6, 13.6, 18.0, 0.0]]
-
-matrix = readFile('inputs/five_dist.txt')
-
-start = timer()
-nearestNeighbor(matrix, 0)
-end = timer()
-
-print(f'{end - start}s')
+    # print('Menor custo =>', sum(arrayDistances), '\n')
+    # print('Melhor caminho =>', visitedVertex)

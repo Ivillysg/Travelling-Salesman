@@ -1,63 +1,48 @@
-from sys import maxsize
-from itertools import permutations
-from inputs.readFile import readFile
+from helpers.saveFile import saveJson
+from tests.mainNN import mainNN
+from tests.mainBF import mainBF
+
+from helpers.dataload import dataload
 from timeit import default_timer as timer
 
+def run(fileName):
+    dataset = dataload(fileName)
 
-#Travelling Salesman problem solution with brute force
-def bruteForce(graph, source):
- 
-    vertex = []
-    for i in range(len(graph)):
-        # armazena todos os vértices menos o vértice de origem
-        if i != source:
-            vertex.append(i)
-      
-    # armazenar peso mínimo do ciclo hamiltoniano
-    min_path = maxsize
-
-    # Armazena o melhor caminho
-
-    next_permutation=permutations(vertex)
-    for i in next_permutation:
-        # armazenar peso do caminho atual (custo)
-        current_pathweight = 0
- 
-        # calcular o peso do caminho atual
-        k = source
-
-        for j in i:
-            current_pathweight += float(graph[k][j])
-            k = j
-        current_pathweight += float(graph[k][source])
-        newMinPath = min(min_path, current_pathweight)
-        # verificar se o path antigo é maior que o path atual
-        if(min_path > newMinPath):
-            # atualiza o peso do caminho mínimo
-            min_path = min(min_path, current_pathweight)
-            pathMin = i
-        
-    bestPath = []
-    for vertices in pathMin:
-       bestPath.append(vertices)
+    matrix = dataset['dist']
     
-    #Adicionando o ponto de partida ao inicio da lista e ao final.
-    bestPath.insert(0, source)
-    bestPath.append(source)
+    #Em caso de uso do dataset usca312.
+    if(fileName == 'usca312'):
+        arr = []
+        for i in dataset['dist']:
+            arr.extend(i)
 
-    print('Custo minimo =>',min_path)
-    print('Caminho =>', bestPath)
-    
+        l = 312
+        data = [[] for i in range(l)]
+        for i in range(len(arr)):
+            data[i // l].append(arr[i])
+        dataset['dist'] = data
+        matrix = data
 
 
+    nn_st = timer()
+    nn_dist, nn_path = mainNN(matrix, source=0)
+    nn_et = timer()
+
+    # bf_st = timer()
+    # bf_dist, bf_path = mainBF(matrix,source=0)
+    # bf_et = timer()
 
 
- 
-# matriz representation of graph
-matriz = readFile('inputs/p01_dist.txt')
-source = 0
-start = timer()
-bruteForce(matriz, source)
-end = timer()
+    dataResult = {
+        # 'bruteforce':{'dist':bf_dist, 'path':bf_path, 'time':bf_et - bf_st},
+        'nearest-neighbor':{'dist':nn_dist, 'path':nn_path, 'time':nn_et - nn_st}
+    }
 
-print(f'{end - start}s')
+    saveJson(dataResult, fileName)
+    print(f'Result file {fileName} has been saved.\n')
+    # print('brute-force: custo =>',dataResult['bruteforce']['dist'],'\n')
+    print('nearest-neighbor: custo =>',dataResult['nearest-neighbor']['dist'],'\n')
+   
+
+run('lau15')
+

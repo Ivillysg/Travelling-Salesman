@@ -3,7 +3,7 @@ import requests
 import json
 
 
-def download_dataset(dir_work, dataset_txt, attrs):
+def downloadData(dir_work, dataset_txt, attrs):
 
     os.chdir(dir_work)
     file_dataset_list = open(dataset_txt)
@@ -71,6 +71,5 @@ def extract_lines_data(data):
     return matrix
 
 
-if __name__ == '__main__':
-    download_dataset('./data', 'list_dataset.txt',
+downloadData('./data', 'list_dataset.txt',
                      ['name', 'dist', 'code'])
